@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: lets-encrypt-prod
+spec:
+  acme:
+    email: sairamp076@gmail.com  # Replace with your email
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: lets-encrypt-prod-private-key
+    solvers:
+      - http01:
+          ingress:
+            class: nginx  # Make sure this matches the ingress class used by your setup

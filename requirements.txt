@@ -1,0 +1,12 @@
+Django>=3.2,<4.0
+djangorestframework
+gunicorn
+langchain>=0.2.0
+langchain-google-genai>=0.0.6
+langchain-community>=0.0.6
+tavily-python>=0.3.0  # If directly using Tavily SDK (if LangChain community handles this fully, this can be optional)
+python-dotenv>=1.0.1
+google-api-python-client>=2.126.0  # Typically needed by google-genai models
+requests>=2.32.0  # DRF and LangChain rely on this under t
+django-cors-headers
+
