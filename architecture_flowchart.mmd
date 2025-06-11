@@ -1,0 +1,28 @@
+flowchart TD
+    A[User Query (API Request)] --> B[Session Handling]
+    B --> C[Retrieve Chat History]
+    C --> D[AI Agent Execution]
+    D --> E[Reasoning & Search]
+    E --> F[Save Interaction]
+    F --> G[API Response]
+
+    subgraph Backend
+        B
+        C
+        D
+        E
+        F
+    end
+
+    style Backend fill:#f9f,stroke:#333,stroke-width:2,opacity:0.1
+    style A fill:#bbf,stroke:#333,stroke-width:2
+    style G fill:#bbf,stroke:#333,stroke-width:2
+
+%%
+%% Explanation:
+%% - User sends a query to the API endpoint.
+%% - Session is checked/created, chat history is retrieved.
+%% - AI agent is invoked with the query and chat history.
+%% - Agent may perform reasoning and search.
+%% - Interaction is saved to the database.
+%% - Response is returned to the user.

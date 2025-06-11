@@ -1,23 +1,25 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: django-ingress
+  name: backend-ingress
+  namespace: default
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/hostname: "34.60.145.104"  # Workaround for IP
 spec:
-  rules:
-    - host: askaiagents.duckdns.org
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: django-app  # Change this to your correct service name
-                port:
-                  number: 8000    # Port your Django app is exposed on
   tls:
-    - hosts:
-        - askaiagents.duckdns.org
-      secretName: django-tls
+  - hosts:
+    - "34.60.145.104"  # Use IP address here (not recommended for production)
+    secretName: nginx-ingress-cert
+  rules:
+  - host: "34.60.145.104"  # Use IP address here (not recommended for production)
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: django-app  # The backend service name
+            port:
+              number: 8000  # The backend port

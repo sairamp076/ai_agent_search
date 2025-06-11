@@ -1,9 +1,5 @@
 from django.urls import path
-from .views.ai_query_views import *
-from .views.graph_views import *
-from .views.interaction_views import *
-from .views.session_views import *
-
+from .views import *
 urlpatterns = [
     path('ask/', AIQueryView.as_view(), name='ai_query'),
     path('sessions/<str:session_key>/generate-graph/', generate_interaction_graph, name='generate_interaction_graph'),

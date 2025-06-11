@@ -71,3 +71,5 @@ class AIQueryView(APIView):
                 ("ai", interaction.ai_response)
             ])
         return chat_history
+
+

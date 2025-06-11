@@ -74,10 +74,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ai_agent_search.wsgi.application'
 
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/data/db.sqlite3',  # This matches the mountPath + filename
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -105,8 +109,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS configuration 👇👇👇
 CORS_ALLOWED_ORIGINS = [
-    "https://preview--intelligent-internet-oracle-14.lovable.app",
+    "https://preview--intelligent-internet-oracle-67.lovable.app",
 ]
 
 # If you need wildcard access for local dev/testing, uncomment this:
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True

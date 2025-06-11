@@ -201,6 +201,37 @@ def session_keys_list(request):
     return Response(response_data)
 
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
+@receiver(post_save, sender=Interaction)
+def auto_tag_interaction(sender, instance, created, **kwargs):
+    if created:
+        # Collect the user query and AI response
+        conversation = f"User: {instance.user_query}\nAI: {instance.ai_response}"
+
+        # Build the AI prompt to suggest tags based on conversation
+        prompt = (
+            "Based on the following conversation, suggest relevant tags. "
+            "Possible tags include: AI, Coding, History, News, and more.\n\n"
+            f"{conversation}\n\nSuggested Tags:"
+        )
+
+        try:
+            # Use AI agent to generate the tags
+            agent = create_ai_agent()
+            result = agent({"input": prompt})
+
+            tags = result.get("output", "").split(",")  # Expecting tags to be comma-separated
+            tags = [tag.strip() for tag in tags if tag.strip()]  # Clean the tags
+
+            # Save the tags in the interaction
+            instance.tags = tags
+            instance.save()
+
+        except Exception as e:
+            print(f"Error auto-tagging interaction: {e}")
 
 
 # Get interactions for a specific session key
@@ -268,37 +299,6 @@ def summarize_session(request, session_key):
 
 
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from .models import Interaction
-
-@receiver(post_save, sender=Interaction)
-def auto_tag_interaction(sender, instance, created, **kwargs):
-    if created:
-        # Collect the user query and AI response
-        conversation = f"User: {instance.user_query}\nAI: {instance.ai_response}"
-
-        # Build the AI prompt to suggest tags based on conversation
-        prompt = (
-            "Based on the following conversation, suggest relevant tags. "
-            "Possible tags include: AI, Coding, History, News, and more.\n\n"
-            f"{conversation}\n\nSuggested Tags:"
-        )
-
-        try:
-            # Use AI agent to generate the tags
-            agent = create_ai_agent()
-            result = agent({"input": prompt})
-
-            tags = result.get("output", "").split(",")  # Expecting tags to be comma-separated
-            tags = [tag.strip() for tag in tags if tag.strip()]  # Clean the tags
-
-            # Save the tags in the interaction
-            instance.tags = tags
-            instance.save()
-
-        except Exception as e:
-            print(f"Error auto-tagging interaction: {e}")
 
 
 
